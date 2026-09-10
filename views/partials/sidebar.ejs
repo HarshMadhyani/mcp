@@ -1,0 +1,62 @@
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-brand">
+      <span class="brand-icon"><i data-lucide="graduation-cap"></i></span>
+      <div class="brand-text">
+        <span class="brand-title">MARWADI UNIVERSITY</span>
+        <span class="brand-subtitle">FOCA ADMISSION</span>
+      </div>
+    </div>
+    <button class="sidebar-close" id="sidebarClose" aria-label="Close sidebar">
+      <i data-lucide="x"></i>
+    </button>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a href="/admin/dashboard" class="nav-item <%= currentPath === '/admin/dashboard' ? 'active' : '' %>">
+      <i data-lucide="layout-dashboard"></i>
+      <span>Dashboard</span>
+    </a>
+    <a href="/admin/students" class="nav-item <%= currentPath.startsWith('/admin/students') ? 'active' : '' %>">
+      <i data-lucide="users"></i>
+      <span>Students</span>
+    </a>
+    <a href="/admin/enquiries" class="nav-item <%= currentPath.startsWith('/admin/enquiries') ? 'active' : '' %>">
+      <i data-lucide="message-square"></i>
+      <span>Admission Enquiries</span>
+    </a>
+    <a href="/admin/tickets" class="nav-item <%= currentPath.startsWith('/admin/tickets') ? 'active' : '' %>">
+      <i data-lucide="ticket"></i>
+      <span>Support Tickets</span>
+    </a>
+    <a href="/admin/courses" class="nav-item <%= currentPath.startsWith('/admin/courses') ? 'active' : '' %>">
+      <i data-lucide="book-open"></i>
+      <span>Courses</span>
+    </a>
+    <a href="/admin/admission-info" class="nav-item <%= currentPath.startsWith('/admin/admission-info') ? 'active' : '' %>">
+      <i data-lucide="info"></i>
+      <span>Admission Information</span>
+    </a>
+    <a href="/admin/faqs" class="nav-item <%= currentPath.startsWith('/admin/faqs') ? 'active' : '' %>">
+      <i data-lucide="help-circle"></i>
+      <span>FAQs</span>
+    </a>
+    <a href="/admin/settings" class="nav-item <%= currentPath === '/admin/settings' ? 'active' : '' %>">
+      <i data-lucide="settings"></i>
+      <span>Settings</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="whatsapp-status">
+      <i data-lucide="smartphone"></i>
+      <span>WhatsApp:</span>
+      <% if (typeof whatsappStatus !== 'undefined' && whatsappStatus === 'CONNECTED') { %>
+        <span class="status-badge status-connected">CONNECTED</span>
+      <% } else { %>
+        <span class="status-badge status-disconnected">DISCONNECTED</span>
+      <% } %>
+    </div>
+  </div>
+</aside>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>

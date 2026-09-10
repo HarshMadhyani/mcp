@@ -1,0 +1,75 @@
+<div class="breadcrumb">
+  <a href="/admin/students">Students</a>
+  <i data-lucide="chevron-right"></i>
+  <span><%= student.full_name %></span>
+</div>
+
+<div class="page-header-content flex-between">
+  <div>
+    <h1 class="page-title"><%= student.full_name %></h1>
+    <p class="page-subtitle"><%= student.student_id %></p>
+  </div>
+  <div>
+    <span class="badge <%= student.status === 'NEW' ? 'badge-primary' : 'badge-outline' %>"><%= student.status %></span>
+  </div>
+</div>
+
+<div class="dashboard-grid">
+  <!-- Details Card -->
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Student Details</h2>
+    </div>
+    <div class="card-body">
+      <dl class="details-list">
+        <div class="detail-item">
+          <dt>WhatsApp Number</dt>
+          <dd><%= student.whatsapp_number %></dd>
+        </div>
+        <div class="detail-item">
+          <dt>Mobile Number</dt>
+          <dd><%= student.mobile || '-' %></dd>
+        </div>
+        <div class="detail-item">
+          <dt>Email Address</dt>
+          <dd><%= student.email || '-' %></dd>
+        </div>
+        <div class="detail-item">
+          <dt>Interested Course</dt>
+          <dd><%= student.course_interest || '-' %></dd>
+        </div>
+        <div class="detail-item">
+          <dt>Current Qualification</dt>
+          <dd><%= student.qualification || '-' %></dd>
+        </div>
+        <div class="detail-item">
+          <dt>Admission Year</dt>
+          <dd><%= student.admission_year || '-' %></dd>
+        </div>
+        <div class="detail-item">
+          <dt>Registered Date</dt>
+          <dd><%= new Date(student.created_at).toLocaleString() %></dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+
+  <!-- Conversation History -->
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">WhatsApp Conversation</h2>
+    </div>
+    <div class="card-body chat-history">
+      <% if (conversations && conversations.length > 0) { %>
+        <% conversations.forEach(msg => { %>
+          <div class="chat-bubble <%= msg.sender === 'bot' ? 'chat-bot' : 'chat-student' %>">
+            <div class="chat-text"><%= msg.message %></div>
+            <div class="chat-meta"><%= new Date(msg.timestamp).toLocaleString([], { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' }) %></div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <p class="text-muted">No conversation history found.</p>
+      <% } %>
+    </div>
+  </div>
+</div>

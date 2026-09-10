@@ -1,0 +1,74 @@
+<div class="page-header-content">
+  <h1 class="page-title">Admission Enquiries</h1>
+  <p class="page-subtitle">Track interactions with the bot's admission info menus</p>
+</div>
+
+<div class="card">
+  <div class="card-header filters-bar">
+    <form action="/admin/enquiries" method="GET" class="filters-form flex-gap">
+      <div class="filter-group">
+        <input type="text" name="search" class="input input-sm" placeholder="Search name or course..." value="<%= filters.search %>">
+      </div>
+      <div class="filter-group">
+        <select name="status" class="select select-sm">
+          <option value="">All Statuses</option>
+          <option value="NEW" <%= filters.status === 'NEW' ? 'selected' : '' %>>New</option>
+          <option value="CONTACTED" <%= filters.status === 'CONTACTED' ? 'selected' : '' %>>Contacted</option>
+          <option value="CLOSED" <%= filters.status === 'CLOSED' ? 'selected' : '' %>>Closed</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-sm btn-outline">Filter</button>
+      <a href="/admin/enquiries" class="btn btn-sm btn-ghost">Clear</a>
+    </form>
+  </div>
+
+  <% if (enquiries.length > 0) { %>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>WhatsApp</th>
+            <th>Course</th>
+            <th>Enquiry Type</th>
+            <th>Message</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% enquiries.forEach(e => { %>
+            <tr>
+              <td class="text-bold"><a href="/admin/students/<%= e.student_id %>" class="link"><%= e.student_name %></a></td>
+              <td><%= e.whatsapp_number %></td>
+              <td><%= e.course || '-' %></td>
+              <td><span class="badge badge-outline"><%= e.enquiry_type %></span></td>
+              <td class="text-truncate" style="max-width: 200px;" title="<%= e.message %>"><%= e.message %></td>
+              <td class="text-muted text-sm"><%= new Date(e.created_at).toLocaleDateString() %></td>
+              <td>
+                <form action="/admin/enquiries/<%= e.enquiry_id %>/status" method="POST" style="display:inline-flex;">
+                  <select name="status" class="select select-sm" onchange="this.form.submit()">
+                    <option value="NEW" <%= e.status === 'NEW' ? 'selected' : '' %>>New</option>
+                    <option value="CONTACTED" <%= e.status === 'CONTACTED' ? 'selected' : '' %>>Contacted</option>
+                    <option value="FOLLOW_UP" <%= e.status === 'FOLLOW_UP' ? 'selected' : '' %>>Follow Up</option>
+                    <option value="CONVERTED" <%= e.status === 'CONVERTED' ? 'selected' : '' %>>Converted</option>
+                    <option value="CLOSED" <%= e.status === 'CLOSED' ? 'selected' : '' %>>Closed</option>
+                  </select>
+                </form>
+              </td>
+              <td>
+                <a href="/admin/students/<%= e.student_id %>" class="btn btn-sm btn-ghost" title="View Student"><i data-lucide="user"></i></a>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } else { %>
+    <div class="empty-state">
+      <i data-lucide="message-square"></i>
+      <p>No enquiries found.</p>
+    </div>
+  <% } %>
+</div>

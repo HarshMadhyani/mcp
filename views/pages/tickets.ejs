@@ -1,0 +1,65 @@
+<div class="page-header-content">
+  <h1 class="page-title">Support Tickets</h1>
+  <p class="page-subtitle">Manage student questions and support requests</p>
+</div>
+
+<div class="card">
+  <div class="card-header filters-bar">
+    <form action="/admin/tickets" method="GET" class="filters-form flex-gap">
+      <div class="filter-group">
+        <input type="text" name="search" class="input input-sm" placeholder="Search ticket ID or student..." value="<%= filters.search %>">
+      </div>
+      <div class="filter-group">
+        <select name="status" class="select select-sm">
+          <option value="">All Statuses</option>
+          <option value="OPEN" <%= filters.status === 'OPEN' ? 'selected' : '' %>>Open</option>
+          <option value="IN_PROGRESS" <%= filters.status === 'IN_PROGRESS' ? 'selected' : '' %>>In Progress</option>
+          <option value="RESOLVED" <%= filters.status === 'RESOLVED' ? 'selected' : '' %>>Resolved</option>
+          <option value="CLOSED" <%= filters.status === 'CLOSED' ? 'selected' : '' %>>Closed</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-sm btn-outline">Filter</button>
+      <a href="/admin/tickets" class="btn btn-sm btn-ghost">Clear</a>
+    </form>
+  </div>
+
+  <% if (tickets.length > 0) { %>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Ticket ID</th>
+            <th>Student</th>
+            <th>Question</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th class="text-right">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% tickets.forEach(t => { %>
+            <tr>
+              <td class="text-bold"><%= t.ticket_id %></td>
+              <td><%= t.student_name %> <br><span class="text-sm text-muted"><%= t.whatsapp_number %></span></td>
+              <td class="text-truncate" style="max-width: 250px;" title="<%= t.question %>"><%= t.question %></td>
+              <td>
+                <span class="badge <%= t.status === 'OPEN' ? 'badge-primary' : (t.status === 'IN_PROGRESS' ? 'badge-dark' : 'badge-outline') %>">
+                  <%= t.status %>
+                </span>
+              </td>
+              <td class="text-muted text-sm"><%= new Date(t.created_at).toLocaleDateString() %></td>
+              <td class="text-right">
+                <a href="/admin/tickets/<%= t.ticket_id %>" class="btn btn-sm btn-ghost">View</a>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } else { %>
+    <div class="empty-state">
+      <i data-lucide="ticket"></i>
+      <p>No support tickets found.</p>
+    </div>
+  <% } %>
+</div>

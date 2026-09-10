@@ -1,0 +1,63 @@
+<div class="breadcrumb">
+  <a href="/admin/courses">Courses</a>
+  <i data-lucide="chevron-right"></i>
+  <span><%= isEdit ? 'Edit Course' : 'New Course' %></span>
+</div>
+
+<div class="page-header-content">
+  <h1 class="page-title"><%= isEdit ? `Edit: ${course.course_name}` : 'Create New Course' %></h1>
+</div>
+
+<div class="card max-w-3xl">
+  <div class="card-body">
+    <form action="<%= isEdit ? `/admin/courses/${course.course_id}` : '/admin/courses' %>" method="POST">
+      
+      <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 0;">
+        <div class="form-group">
+          <label class="form-label" for="course_name">Course Short Name *</label>
+          <input type="text" id="course_name" name="course_name" class="input w-full" required placeholder="e.g., BCA" value="<%= isEdit ? course.course_name : '' %>">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="degree">Full Degree Name *</label>
+          <input type="text" id="degree" name="degree" class="input w-full" required placeholder="e.g., Bachelor of Computer Applications" value="<%= isEdit ? course.degree : '' %>">
+        </div>
+      </div>
+
+      <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 0;">
+        <div class="form-group">
+          <label class="form-label" for="duration">Duration</label>
+          <input type="text" id="duration" name="duration" class="input w-full" placeholder="e.g., 3 Years (6 Semesters)" value="<%= isEdit ? course.duration : '' %>">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="admission_year">Admission Year</label>
+          <input type="text" id="admission_year" name="admission_year" class="input w-full" placeholder="e.g., 2026" value="<%= isEdit ? course.admission_year : '' %>">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="eligibility">Eligibility Criteria</label>
+        <textarea id="eligibility" name="eligibility" class="textarea w-full" rows="2" placeholder="Describe who can apply..."><%= isEdit ? course.eligibility : '' %></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="fees">Fee Structure</label>
+        <input type="text" id="fees" name="fees" class="input w-full" placeholder="e.g., Contact for details" value="<%= isEdit ? course.fees : '' %>">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="description">Detailed Description</label>
+        <textarea id="description" name="description" class="textarea w-full" rows="4" placeholder="Course overview..."><%= isEdit ? course.description : '' %></textarea>
+      </div>
+
+      <div class="form-group flex items-center" style="gap: 0.5rem; margin-top: 1rem;">
+        <input type="checkbox" id="available" name="available" class="checkbox" <%= !isEdit || course.available === 'true' ? 'checked' : '' %>>
+        <label class="form-label mb-0" for="available">Course is currently available for admission</label>
+      </div>
+
+      <div class="form-footer mt-6 pt-4 border-t flex-end gap-2">
+        <a href="/admin/courses" class="btn btn-ghost">Cancel</a>
+        <button type="submit" class="btn btn-primary"><%= isEdit ? 'Save Changes' : 'Create Course' %></button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+<div class="page-header-content flex-between">
+  <div>
+    <h1 class="page-title">Courses</h1>
+    <p class="page-subtitle">Manage university programs and courses</p>
+  </div>
+  <a href="/admin/courses/new" class="btn btn-primary"><i data-lucide="plus"></i> Add Course</a>
+</div>
+
+<div class="card">
+  <% if (courses.length > 0) { %>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Course Name</th>
+            <th>Degree</th>
+            <th>Duration</th>
+            <th>Admission Year</th>
+            <th>Status</th>
+            <th class="text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% courses.forEach(c => { %>
+            <tr>
+              <td class="text-bold"><%= c.course_name %></td>
+              <td><%= c.degree %></td>
+              <td><%= c.duration %></td>
+              <td><%= c.admission_year || 'N/A' %></td>
+              <td>
+                <% if (c.available === 'true') { %>
+                  <span class="badge badge-primary">Active</span>
+                <% } else { %>
+                  <span class="badge badge-outline">Inactive</span>
+                <% } %>
+              </td>
+              <td class="text-right">
+                <a href="/admin/courses/<%= c.course_id %>/edit" class="btn btn-sm btn-ghost"><i data-lucide="edit"></i> Edit</a>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } else { %>
+    <div class="empty-state">
+      <i data-lucide="book-open"></i>
+      <p>No courses found. Add your first course.</p>
+      <a href="/admin/courses/new" class="btn btn-outline mt-4">Add Course</a>
+    </div>
+  <% } %>
+</div>

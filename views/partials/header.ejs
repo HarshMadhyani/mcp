@@ -1,0 +1,21 @@
+<header class="page-header">
+  <div class="header-left">
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+      <i data-lucide="menu"></i>
+    </button>
+  </div>
+  <div class="header-right">
+    <% if (typeof admin !== 'undefined' && admin) { %>
+      <div class="header-user">
+        <div class="user-avatar"><%= admin.name ? admin.name.charAt(0).toUpperCase() : 'A' %></div>
+        <div class="user-info">
+          <span class="user-name"><%= admin.name || 'Admin' %></span>
+          <span class="user-role"><%= admin.role === 'super_admin' ? 'Super Admin' : 'Admin' %></span>
+        </div>
+        <a href="/admin/logout" class="btn btn-outline btn-sm" title="Logout">
+          <i data-lucide="log-out"></i>
+        </a>
+      </div>
+    <% } %>
+  </div>
+</header>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof title !== 'undefined' ? title + ' — ' : '' %><%= university.shortName %> Admin</title>
+  <meta name="description" content="<%= university.name %> - <%= university.department %> Admission Support Dashboard">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/app.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <%- include('../partials/sidebar') %>
+    <div class="main-content">
+      <%- include('../partials/header') %>
+      <main class="page-content">
+        <%- include('../partials/flash') %>
+        <%- body %>
+      </main>
+    </div>
+  </div>
+  <script src="/js/app.js"></script>
+</body>
+</html>

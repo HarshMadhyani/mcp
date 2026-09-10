@@ -1,0 +1,110 @@
+<div class="page-header-content flex-between">
+  <div>
+    <h1 class="page-title">Admission Information</h1>
+    <p class="page-subtitle">Manage static content sent to students (eligibility, dates, fees, etc.)</p>
+  </div>
+  <button class="btn btn-primary" onclick="openInfoModal()"><i data-lucide="plus"></i> Add Information</button>
+</div>
+
+<div class="card">
+  <div class="card-header border-b">
+    <div class="tabs">
+      <a href="/admin/admission-info" class="tab <%= !activeCategory ? 'active' : '' %>">All</a>
+      <% categories.forEach(cat => { %>
+        <a href="/admin/admission-info?category=<%= cat.value %>" class="tab <%= activeCategory === cat.value ? 'active' : '' %>"><%= cat.label %></a>
+      <% }) %>
+    </div>
+  </div>
+
+  <% if (infoItems.length > 0) { %>
+    <div class="card-body">
+      <div class="info-grid" style="display: grid; gap: 1rem;">
+        <% infoItems.forEach(item => { %>
+          <div class="info-card border rounded p-4 relative bg-secondary">
+            <div class="flex-between mb-2">
+              <h3 class="text-bold m-0"><%= item.title %></h3>
+              <div class="flex items-center gap-2">
+                <span class="badge badge-outline text-xs"><%= item.category %></span>
+                <% if (item.active !== 'true') { %>
+                  <span class="badge badge-dark text-xs">Inactive</span>
+                <% } %>
+                <button class="btn btn-ghost btn-sm" onclick="editInfo(this)" 
+                        data-id="<%= item.info_id %>"
+                        data-title="<%= item.title %>"
+                        data-category="<%= item.category %>"
+                        data-content="<%= item.content %>"
+                        data-active="<%= item.active %>">
+                  <i data-lucide="edit"></i>
+                </button>
+              </div>
+            </div>
+            <p class="whitespace-pre-wrap text-sm text-secondary m-0"><%= item.content %></p>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  <% } else { %>
+    <div class="empty-state">
+      <i data-lucide="info"></i>
+      <p>No information found for this category.</p>
+    </div>
+  <% } %>
+</div>
+
+<!-- Add/Edit Modal (hidden template) -->
+<template id="infoModalTemplate">
+  <form id="infoForm" method="POST" action="/admin/admission-info">
+    <div class="form-group">
+      <label class="form-label">Category</label>
+      <select name="category" id="infoCategory" class="select w-full" required>
+        <% categories.forEach(cat => { %>
+          <option value="<%= cat.value %>"><%= cat.label %></option>
+        <% }) %>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Title</label>
+      <input type="text" name="title" id="infoTitle" class="input w-full" required>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Content (WhatsApp formatting supported)</label>
+      <textarea name="content" id="infoContent" class="textarea w-full" rows="6" required></textarea>
+      <p class="text-xs text-muted mt-1">Use *bold* for emphasis. Keep messages concise.</p>
+    </div>
+    <div class="form-group flex items-center gap-2 mt-4">
+      <input type="checkbox" name="active" id="infoActive" checked>
+      <label for="infoActive" class="mb-0">Active</label>
+    </div>
+    <div class="form-footer mt-6 flex-end gap-2">
+      <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button type="submit" class="btn btn-primary">Save Info</button>
+    </div>
+  </form>
+</template>
+
+<script>
+  function openInfoModal() {
+    const tmpl = document.getElementById('infoModalTemplate').innerHTML;
+    document.getElementById('modalTitle').innerText = 'Add Admission Information';
+    document.getElementById('modalBody').innerHTML = tmpl;
+    document.getElementById('modalOverlay').style.display = 'flex';
+  }
+
+  function editInfo(btn) {
+    const id = btn.dataset.id;
+    openInfoModal();
+    
+    document.getElementById('modalTitle').innerText = 'Edit Admission Information';
+    document.getElementById('infoForm').action = `/admin/admission-info/${id}`;
+    
+    document.getElementById('infoCategory').value = btn.dataset.category;
+    document.getElementById('infoTitle').value = btn.dataset.title;
+    document.getElementById('infoContent').value = btn.dataset.content;
+    document.getElementById('infoActive').checked = btn.dataset.active === 'true';
+  }
+
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  function closeModal() {
+    document.getElementById('modalOverlay').style.display = 'none';
+  }
+</script>

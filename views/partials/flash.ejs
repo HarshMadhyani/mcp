@@ -1,0 +1,23 @@
+<% if (typeof flash !== 'undefined') { %>
+  <% if (flash.success) { %>
+    <div class="alert alert-success" id="flashAlert">
+      <i data-lucide="check-circle"></i>
+      <span><%= flash.success %></span>
+      <button class="alert-close" onclick="this.parentElement.remove()"><i data-lucide="x"></i></button>
+    </div>
+  <% } %>
+  <% if (flash.error) { %>
+    <div class="alert alert-error" id="flashAlert">
+      <i data-lucide="alert-circle"></i>
+      <span><%= flash.error %></span>
+      <button class="alert-close" onclick="this.parentElement.remove()"><i data-lucide="x"></i></button>
+    </div>
+  <% } %>
+  <% if (flash.info) { %>
+    <div class="alert alert-info" id="flashAlert">
+      <i data-lucide="info"></i>
+      <span><%= flash.info %></span>
+      <button class="alert-close" onclick="this.parentElement.remove()"><i data-lucide="x"></i></button>
+    </div>
+  <% } %>
+<% } %>

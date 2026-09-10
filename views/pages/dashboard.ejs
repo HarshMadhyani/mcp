@@ -1,0 +1,112 @@
+<div class="page-header-content">
+  <h1 class="page-title">Dashboard</h1>
+  <p class="page-subtitle">Overview of FOCA admission activity</p>
+</div>
+
+<div class="stats-grid">
+  <div class="card stat-card">
+    <div class="stat-header">
+      <h3 class="stat-title">Total Students</h3>
+      <i data-lucide="users" class="stat-icon"></i>
+    </div>
+    <div class="stat-value"><%= stats.totalStudents %></div>
+  </div>
+
+  <div class="card stat-card">
+    <div class="stat-header">
+      <h3 class="stat-title">New Enquiries</h3>
+      <i data-lucide="message-square" class="stat-icon"></i>
+    </div>
+    <div class="stat-value"><%= stats.newEnquiries %></div>
+  </div>
+
+  <div class="card stat-card">
+    <div class="stat-header">
+      <h3 class="stat-title">Open Tickets</h3>
+      <i data-lucide="ticket" class="stat-icon"></i>
+    </div>
+    <div class="stat-value"><%= stats.openTickets %></div>
+  </div>
+
+  <div class="card stat-card">
+    <div class="stat-header">
+      <h3 class="stat-title">Top Course</h3>
+      <i data-lucide="trending-up" class="stat-icon"></i>
+    </div>
+    <div class="stat-value"><%= stats.mostInterestedCourse %></div>
+  </div>
+</div>
+
+<div class="dashboard-grid">
+  <div class="card dashboard-section">
+    <div class="card-header">
+      <h2 class="card-title">Recent Enquiries</h2>
+      <a href="/admin/enquiries" class="btn btn-sm btn-outline">View All</a>
+    </div>
+    <% if (recentEnquiries.length > 0) { %>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Course</th>
+              <th>Type</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% recentEnquiries.forEach(e => { %>
+              <tr>
+                <td><%= e.student_name %></td>
+                <td><%= e.course || '-' %></td>
+                <td><span class="badge badge-outline"><%= e.enquiry_type %></span></td>
+                <td class="text-muted text-sm"><%= new Date(e.created_at).toLocaleDateString() %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } else { %>
+      <div class="empty-state">
+        <i data-lucide="inbox"></i>
+        <p>No recent enquiries found.</p>
+      </div>
+    <% } %>
+  </div>
+
+  <div class="card dashboard-section">
+    <div class="card-header">
+      <h2 class="card-title">Recent Tickets</h2>
+      <a href="/admin/tickets" class="btn btn-sm btn-outline">View All</a>
+    </div>
+    <% if (recentTickets.length > 0) { %>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Student</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% recentTickets.forEach(t => { %>
+              <tr>
+                <td><a href="/admin/tickets/<%= t.ticket_id %>" class="text-bold"><%= t.ticket_id %></a></td>
+                <td><%= t.student_name %></td>
+                <td>
+                  <span class="badge <%= t.status === 'OPEN' ? 'badge-primary' : 'badge-outline' %>"><%= t.status %></span>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } else { %>
+      <div class="empty-state">
+        <i data-lucide="check-circle"></i>
+        <p>No support tickets found.</p>
+      </div>
+    <% } %>
+  </div>
+</div>

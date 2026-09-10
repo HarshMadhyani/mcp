@@ -1,0 +1,91 @@
+<div class="page-header-content flex-between">
+  <div>
+    <h1 class="page-title">Students</h1>
+    <p class="page-subtitle">Manage registered students and their admission status</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header filters-bar">
+    <form action="/admin/students" method="GET" class="filters-form flex-gap">
+      <div class="filter-group">
+        <input type="text" name="search" class="input input-sm" placeholder="Search name, phone, email..." value="<%= filters.search %>">
+      </div>
+      <div class="filter-group">
+        <select name="course" class="select select-sm">
+          <option value="">All Courses</option>
+          <% courses.forEach(c => { %>
+            <option value="<%= c.course_name %>" <%= filters.course === c.course_name ? 'selected' : '' %>><%= c.course_name %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="filter-group">
+        <select name="status" class="select select-sm">
+          <option value="">All Statuses</option>
+          <option value="NEW" <%= filters.status === 'NEW' ? 'selected' : '' %>>New</option>
+          <option value="IN_PROGRESS" <%= filters.status === 'IN_PROGRESS' ? 'selected' : '' %>>In Progress</option>
+          <option value="ADMITTED" <%= filters.status === 'ADMITTED' ? 'selected' : '' %>>Admitted</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-sm btn-outline">Filter</button>
+      <a href="/admin/students" class="btn btn-sm btn-ghost">Clear</a>
+    </form>
+  </div>
+
+  <% if (students.length > 0) { %>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>WhatsApp</th>
+            <th>Course</th>
+            <th>Year</th>
+            <th>Status</th>
+            <th>Created Date</th>
+            <th class="text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% students.forEach(student => { %>
+            <tr>
+              <td class="text-bold"><%= student.full_name || 'N/A' %></td>
+              <td><%= student.whatsapp_number %></td>
+              <td><%= student.course_interest || '-' %></td>
+              <td><%= student.admission_year || '-' %></td>
+              <td>
+                <span class="badge <%= student.status === 'NEW' ? 'badge-primary' : 'badge-outline' %>">
+                  <%= student.status %>
+                </span>
+              </td>
+              <td class="text-muted text-sm"><%= new Date(student.created_at).toLocaleDateString() %></td>
+              <td class="text-right">
+                <a href="/admin/students/<%= student.student_id %>" class="btn btn-sm btn-ghost"><i data-lucide="eye"></i> View</a>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+    
+    <% if (pagination.totalPages > 1) { %>
+      <div class="pagination-container">
+        <div class="pagination-info">Showing <%= ((pagination.page - 1) * pagination.perPage) + 1 %> to <%= Math.min(pagination.page * pagination.perPage, pagination.total) %> of <%= pagination.total %> entries</div>
+        <div class="pagination">
+          <% if (pagination.page > 1) { %>
+            <a href="?page=<%= pagination.page - 1 %>&search=<%= filters.search %>&course=<%= filters.course %>&status=<%= filters.status %>" class="btn btn-sm btn-outline">Prev</a>
+          <% } %>
+          <span class="pagination-current">Page <%= pagination.page %> of <%= pagination.totalPages %></span>
+          <% if (pagination.page < pagination.totalPages) { %>
+            <a href="?page=<%= pagination.page + 1 %>&search=<%= filters.search %>&course=<%= filters.course %>&status=<%= filters.status %>" class="btn btn-sm btn-outline">Next</a>
+          <% } %>
+        </div>
+      </div>
+    <% } %>
+  <% } else { %>
+    <div class="empty-state">
+      <i data-lucide="users"></i>
+      <p>No students found matching your criteria.</p>
+    </div>
+  <% } %>
+</div>
